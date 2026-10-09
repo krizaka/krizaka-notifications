@@ -1,5 +1,6 @@
 package com.krizaka.notifications.service.infrastructure.config;
 
+import com.krizaka.messaging.topology.MessagingExchanges;
 import java.util.List;
 import java.util.Map;
 import org.springframework.amqp.core.Binding;
@@ -15,22 +16,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * RabbitMQ topology of the notification service (AGENTS.md §6): three queues bound to the shared
- * {@code orazaka.events} topic exchange, each dead-lettering to its {@code <queue>.dlq} through
- * {@code orazaka.dlx}. Exchange declarations are idempotent duplicates of the platform topology so
- * the service can start before any producer has declared them.
+ * RabbitMQ topology of the notification service: three queues bound to the platform's events topic
+ * exchange, each dead-lettering to its {@code <queue>.dlq} through the dead-letter exchange — both
+ * named by {@link MessagingExchanges}. Exchange declarations are idempotent duplicates of the
+ * platform topology so the service can start before any producer has declared them.
  */
 @Configuration
 public class AmqpConfiguration {
 
   @Bean
-  public TopicExchange eventsExchange() {
-    return new TopicExchange(AmqpConstants.EVENTS_EXCHANGE, true, false);
+  public TopicExchange eventsExchange(MessagingExchanges exchanges) {
+    return new TopicExchange(exchanges.events(), true, false);
   }
 
   @Bean
-  public DirectExchange deadLetterExchange() {
-    return new DirectExchange(AmqpConstants.DLX_EXCHANGE, true, false);
+  public DirectExchange deadLetterExchange(MessagingExchanges exchanges) {
+    return new DirectExchange(exchanges.deadLetter(), true, false);
   }
 
   @Bean
@@ -81,7 +82,7 @@ public class AmqpConfiguration {
             false,
             Map.of(
                 "x-dead-letter-exchange",
-                AmqpConstants.DLX_EXCHANGE,
+                deadLetters.getName(),
                 "x-dead-letter-routing-key",
                 name));
     Queue dlq = new Queue(deadLetterName, true, false, false);

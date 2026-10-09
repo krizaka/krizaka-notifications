@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * sent through one channel to one recipient. The producer never renders text and never knows the
  * provider; it declares the intent and the variables.
  *
- * <p>Published on {@link NotificationRouting#EVENTS_EXCHANGE} with routing key {@link
+ * <p>Published on the platform's events exchange with routing key {@link
  * NotificationRouting#NOTIFICATION_REQUESTED}. Set an AMQP {@code messageId} to make the delivery
  * idempotent.
  *

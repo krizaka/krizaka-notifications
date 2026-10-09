@@ -1,14 +1,12 @@
 package com.krizaka.notifications.domain.model;
 
 /**
- * The AMQP coordinates of the notification contract (AGENTS.md §6). A producer needs nothing else:
- * publish a {@link NotificationRequest} to {@link #EVENTS_EXCHANGE} with {@link
- * #NOTIFICATION_REQUESTED}.
+ * The AMQP coordinates of the notification contract. A producer publishes a {@link
+ * NotificationRequest} as JSON, with a {@code messageId}, to the events exchange of the platform it
+ * runs on ({@code krizaka.messaging.exchanges.events}, {@code krizaka.events} by default) with the
+ * routing key {@link #NOTIFICATION_REQUESTED}.
  */
 public final class NotificationRouting {
-
-  /** The platform's topic exchange for domain events. */
-  public static final String EVENTS_EXCHANGE = "orazaka.events";
 
   /** Routing key of an explicit {@link NotificationRequest}. */
   public static final String NOTIFICATION_REQUESTED = "evt.notification.requested";

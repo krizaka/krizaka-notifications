@@ -79,6 +79,11 @@ krizaka:
       # Comma-separated host names a webhook may target. Empty = webhook channel disabled.
       allowed-hosts: ${NOTIFICATIONS_WEBHOOK_ALLOWED_HOSTS:}
   messaging:
+    exchanges:
+      # The bus this service runs on belongs to the platform that hosts it: set EVENTS_EXCHANGE and
+      # DLX_EXCHANGE to join an existing one; standalone it creates and uses its own.
+      events: ${EVENTS_EXCHANGE:krizaka.events}
+      dead-letter: ${DLX_EXCHANGE:krizaka.dlx}
     dedup:
       # This service is stateless (no database): claims live in memory for 24 h, which covers
       # broker redeliveries and double publishes but not a duplicate after a restart.

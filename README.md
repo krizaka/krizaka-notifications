@@ -38,13 +38,13 @@ line, `{{variable}}` placeholders, `en` fallback); point `NOTIFICATIONS_TEMPLATE
 brand them without a rebuild. Links in the identity e-mails come from
 `NOTIFICATIONS_VERIFY_EMAIL_URL` / `NOTIFICATIONS_RESET_PASSWORD_URL` (with a `{token}` placeholder).
 
-### Inputs (AMQP, `orazaka.events` topic exchange)
+### Inputs (AMQP, the platform's events topic exchange)
 
 | Routing key | Queue | What is sent |
 |:---|:---|:---|
-| `evt.user.*` (`evt.user.registered`) | `orazaka.events.user.notifications` | verification e-mail |
-| `evt.password.*` (`evt.password.reset`) | `orazaka.events.password.notifications` | password-reset e-mail |
-| `evt.notification.requested` | `orazaka.notifications.requests` | any `NotificationRequest` (channel, recipient, template, variables) |
+| `evt.user.*` (`evt.user.registered`) | `krizaka.notifications.user-events` | verification e-mail |
+| `evt.password.*` (`evt.password.reset`) | `krizaka.notifications.password-events` | password-reset e-mail |
+| `evt.notification.requested` | `krizaka.notifications.requests` | any `NotificationRequest` (channel, recipient, template, variables) |
 
 Every queue has a `<queue>.dlq`, retries back off exponentially and deliveries are idempotent by
 `messageId` (krizaka-messaging).
@@ -86,9 +86,9 @@ routing key `evt.notification.requested` and a `messageId` — a redelivery is t
 
 RabbitMQ is required; no database.
 
-> **Wire names.** The exchange and queues (`orazaka.events`, `orazaka.notifications.requests`, …) keep the names of the
-> platform this service was extracted from, so existing producers keep working. They are a contract with your
-> producers: renaming them is a coordinated migration.
+> **Messaging.** The service binds its queues (`krizaka.notifications.*`) to the exchanges of the platform it runs on:
+> `krizaka.messaging.exchanges.events` / `.dead-letter` (`EVENTS_EXCHANGE` / `DLX_EXCHANGE`, defaults `krizaka.events` /
+> `krizaka.dlx`).
 
 ## Build
 

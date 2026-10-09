@@ -7,11 +7,12 @@ import org.junit.jupiter.api.Test;
 class AmqpConstantsTest {
 
   @Test
-  void keepsTheQueueNamesTheIdentityEventsWereAlwaysBoundTo() {
+  void ownsItsQueuesUnderItsOwnName() {
     assertThat(AmqpConstants.USER_NOTIFICATIONS_QUEUE)
-        .isEqualTo("orazaka.events.user.notifications");
+        .isEqualTo("krizaka.notifications.user-events");
     assertThat(AmqpConstants.PASSWORD_NOTIFICATIONS_QUEUE)
-        .isEqualTo("orazaka.events.password.notifications");
+        .isEqualTo("krizaka.notifications.password-events");
+    assertThat(AmqpConstants.REQUESTS_QUEUE).isEqualTo("krizaka.notifications.requests");
   }
 
   @Test

@@ -2,6 +2,7 @@ package com.krizaka.notifications.service.infrastructure.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.krizaka.messaging.topology.MessagingExchanges;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
@@ -9,12 +10,14 @@ import org.springframework.amqp.core.Queue;
 class AmqpConfigurationTest {
 
   private final AmqpConfiguration configuration = new AmqpConfiguration();
+  private final MessagingExchanges platform =
+      new MessagingExchanges("platform.events", "platform.dlx");
 
   @Test
   void declaresEveryQueueWithItsDeadLetterQueue() {
     var declarables =
         configuration.notificationQueues(
-            configuration.eventsExchange(), configuration.deadLetterExchange());
+            configuration.eventsExchange(platform), configuration.deadLetterExchange(platform));
 
     var queues = declarables.getDeclarablesByType(Queue.class);
     assertThat(queues)
@@ -31,7 +34,7 @@ class AmqpConfigurationTest {
         .allSatisfy(
             queue ->
                 assertThat(queue.getArguments())
-                    .containsEntry("x-dead-letter-exchange", AmqpConstants.DLX_EXCHANGE)
+                    .containsEntry("x-dead-letter-exchange", "platform.dlx")
                     .containsEntry("x-dead-letter-routing-key", queue.getName()));
     assertThat(declarables.getDeclarablesByType(Binding.class))
         .extracting(Binding::getRoutingKey)
@@ -39,8 +42,15 @@ class AmqpConfigurationTest {
   }
 
   @Test
-  void bindsToThePlatformExchanges() {
-    assertThat(configuration.eventsExchange().getName()).isEqualTo("orazaka.events");
-    assertThat(configuration.deadLetterExchange().getName()).isEqualTo("orazaka.dlx");
+  void bindsToTheExchangesThePlatformNames() {
+    assertThat(configuration.eventsExchange(platform).getName()).isEqualTo("platform.events");
+    assertThat(configuration.deadLetterExchange(platform).getName()).isEqualTo("platform.dlx");
+  }
+
+  @Test
+  void standaloneItRunsOnTheKrizakaExchanges() {
+    MessagingExchanges defaults = MessagingExchanges.defaults();
+    assertThat(configuration.eventsExchange(defaults).getName()).isEqualTo("krizaka.events");
+    assertThat(configuration.deadLetterExchange(defaults).getName()).isEqualTo("krizaka.dlx");
   }
 }
