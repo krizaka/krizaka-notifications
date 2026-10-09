@@ -79,3 +79,11 @@ orazaka:
     webhook:
       # Comma-separated host names a webhook may target. Empty = webhook channel disabled.
       allowed-hosts: ${NOTIFICATIONS_WEBHOOK_ALLOWED_HOSTS:}
+
+# ── Krizaka platform kit ──────────────────────────────────────────────────────
+krizaka:
+  messaging:
+    dedup:
+      # This service is stateless (no database): claims live in memory for 24 h, which covers
+      # broker redeliveries and double publishes but not a duplicate after a restart.
+      store: memory

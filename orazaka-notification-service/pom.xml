@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.orazaka</groupId>
+        <groupId>com.krizaka.orazaka</groupId>
         <artifactId>orazaka-notifications</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -16,8 +16,13 @@
     <description>Notification service — renders templates and delivers them through the channel each request names (e-mail, SMS, webhook); stateless, AMQP-driven</description>
 
     <dependencies>
+        <!-- Krizaka platform kit: idempotent message consumption (claim / release). -->
         <dependency>
-            <groupId>com.orazaka</groupId>
+            <groupId>com.krizaka</groupId>
+            <artifactId>krizaka-messaging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.krizaka.orazaka</groupId>
             <artifactId>orazaka-notification-api</artifactId>
         </dependency>
 
@@ -60,7 +65,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.orazaka</groupId>
+            <groupId>com.krizaka.orazaka</groupId>
             <artifactId>orazaka-test-support</artifactId>
         </dependency>
         <dependency>

@@ -1,7 +1,7 @@
 package com.orazaka.notificationservice.infrastructure.adapter.amqp;
 
+import com.krizaka.messaging.dedup.MessageDedup;
 import com.orazaka.notification.domain.model.NotificationRequest;
-import com.orazaka.notificationservice.application.service.MessageDedupService;
 import com.orazaka.notificationservice.application.service.NotificationService;
 import com.orazaka.notificationservice.infrastructure.config.AmqpConstants;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -20,10 +20,9 @@ public class NotificationRequestListener {
   static final String DEDUP_CONSUMER = "notifications.request";
 
   private final NotificationService notificationService;
-  private final MessageDedupService dedup;
+  private final MessageDedup dedup;
 
-  public NotificationRequestListener(
-      NotificationService notificationService, MessageDedupService dedup) {
+  public NotificationRequestListener(NotificationService notificationService, MessageDedup dedup) {
     this.notificationService = notificationService;
     this.dedup = dedup;
   }

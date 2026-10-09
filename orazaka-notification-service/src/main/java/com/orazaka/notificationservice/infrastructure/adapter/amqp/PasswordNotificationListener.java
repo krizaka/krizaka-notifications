@@ -1,8 +1,8 @@
 package com.orazaka.notificationservice.infrastructure.adapter.amqp;
 
+import com.krizaka.messaging.dedup.MessageDedup;
 import com.orazaka.notification.domain.model.Channel;
 import com.orazaka.notification.domain.model.NotificationRequest;
-import com.orazaka.notificationservice.application.service.MessageDedupService;
 import com.orazaka.notificationservice.application.service.NotificationService;
 import com.orazaka.notificationservice.domain.model.PasswordResetRequestedEvent;
 import com.orazaka.notificationservice.infrastructure.config.AmqpConstants;
@@ -23,12 +23,12 @@ public class PasswordNotificationListener {
   static final String TEMPLATE = "password-reset";
 
   private final NotificationService notificationService;
-  private final MessageDedupService dedup;
+  private final MessageDedup dedup;
   private final NotificationProperties.Links links;
 
   public PasswordNotificationListener(
       NotificationService notificationService,
-      MessageDedupService dedup,
+      MessageDedup dedup,
       NotificationProperties properties) {
     this.notificationService = notificationService;
     this.dedup = dedup;

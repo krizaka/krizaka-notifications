@@ -9,9 +9,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.krizaka.messaging.dedup.MessageDedup;
 import com.orazaka.notification.domain.model.Channel;
 import com.orazaka.notification.domain.model.NotificationRequest;
-import com.orazaka.notificationservice.application.service.MessageDedupService;
 import com.orazaka.notificationservice.application.service.NotificationService;
 import com.orazaka.notificationservice.domain.exception.DeliveryException;
 import com.orazaka.notificationservice.domain.model.UserRegisteredEvent;
@@ -23,7 +23,7 @@ import org.mockito.ArgumentCaptor;
 class UserNotificationListenerTest {
 
   private final NotificationService notifications = mock(NotificationService.class);
-  private final MessageDedupService dedup = mock(MessageDedupService.class);
+  private final MessageDedup dedup = mock(MessageDedup.class);
   private final UserNotificationListener listener =
       new UserNotificationListener(
           notifications,
