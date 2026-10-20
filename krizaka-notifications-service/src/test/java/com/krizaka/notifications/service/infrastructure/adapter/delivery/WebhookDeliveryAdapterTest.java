@@ -29,7 +29,7 @@ class WebhookDeliveryAdapterTest {
         null,
         new NotificationProperties.Links("http://x/v?t={token}", "http://x/r?t={token}"),
         null,
-        new NotificationProperties.Webhook(hosts));
+        new NotificationProperties.Webhook(hosts, null));
   }
 
   private static Notification to(String url) {

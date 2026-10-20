@@ -116,11 +116,6 @@ public record NotificationProperties(
       signingSecret = signingSecret == null || signingSecret.isBlank() ? null : signingSecret;
     }
 
-    /** An unsigned webhook policy. */
-    public Webhook(List<String> allowedHosts) {
-      this(allowedHosts, null);
-    }
-
     /** {@code true} when {@code host} is on the allow-list. */
     public boolean allows(String host) {
       return host != null && allowedHosts.contains(host.toLowerCase(Locale.ROOT));
