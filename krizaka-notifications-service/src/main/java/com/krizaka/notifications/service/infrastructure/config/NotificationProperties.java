@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.ConstructorBinding;
 
 /**
  * Wiring of the notification service ({@code krizaka.notifications}): who the mail is from, where
@@ -105,6 +106,7 @@ public record NotificationProperties(
    */
   public record Webhook(List<String> allowedHosts, String signingSecret) {
 
+    @ConstructorBinding
     public Webhook {
       allowedHosts =
           allowedHosts == null
@@ -114,6 +116,11 @@ public record NotificationProperties(
                   .map(host -> host.strip().toLowerCase(Locale.ROOT))
                   .toList();
       signingSecret = signingSecret == null || signingSecret.isBlank() ? null : signingSecret;
+    }
+
+    /** An unsigned webhook policy (kept for callers of the former single-argument constructor). */
+    public Webhook(List<String> allowedHosts) {
+      this(allowedHosts, null);
     }
 
     /** {@code true} when {@code host} is on the allow-list. */
