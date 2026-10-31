@@ -12,8 +12,8 @@
     <parent>
         <groupId>com.krizaka</groupId>
         <artifactId>krizaka-parent</artifactId>
-        <version>0.2.0</version>
-        <relativePath>../krizaka-build/krizaka-parent/pom.xml</relativePath>
+        <version>0.3.4</version>
+        <relativePath/>
     </parent>
 
     <artifactId>krizaka-notifications</artifactId>
@@ -112,6 +112,12 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <!-- This repository's own modules at project.version, ahead of the BOM (which names the last published ones). -->
+            <dependency>
+                <groupId>com.krizaka</groupId>
+                <artifactId>krizaka-notifications-api</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <!-- The other Krizaka artifacts, at this repository's own version. -->
             <dependency>
