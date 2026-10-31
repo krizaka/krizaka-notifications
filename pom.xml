@@ -17,6 +17,7 @@
     </parent>
 
     <artifactId>krizaka-notifications</artifactId>
+    <version>0.5.0</version>
     <packaging>pom</packaging>
     <name>Krizaka Notifications</name>
     <description>Channel-based notification delivery for any Krizaka application: e-mail (SMTP), SMS (Twilio) and webhooks behind one DeliveryClient port, driven by platform events (user registered, password reset) or explicit notification requests over AMQP.</description>
